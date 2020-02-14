@@ -1,0 +1,110 @@
+---
+title: "Accessibility Testing for RStudio 1.3 Preview"
+author: "JooYoung Seo (jooyoung@psu.edu)"
+date: "`r Sys.Date()`"
+#output:
+#  bookdown::markdown_document2:
+#    base_format: 'function(...) prettydoc::html_pretty(theme = "architect", highlight = "github", ...)'
+#    toc: true
+#    toc_depth: 4
+knit: "bookdown::render_book"
+---
+
+# Background {#background}
+
+When we talk about "accessibility," the following question has to be asked first.
+
+* What kind of interaction mode are we testing in target UI between input and output?
+
+Table\ \@ref(tab:at) describes each interaction mode  used for web-browsing depending on different screen readers and OS platforms:
+
+```{r at, echo = FALSE}
+at <- ezpickr::pick("data/screenreader-mode.xlsx")
+knitr::kable(at, caption = "Interaction modes for web-browsing in each screen reader.")
+```
+
+The table above is useful when testing accessibility for RStudio Server and/or any web-based applications; another table will be added later for testing native desktop applications that have different cursor navigation modes and terminologies depending on each screen reder and platform.
+
+# Systematic Issue Reports
+
+Table\ \@ref(tab:issue) provides comprehensive issue reports thus far as of `r Sys.Date()`; reproducible steps are hyper-linked respectively:
+
+```{r issue, echo = FALSE}
+issue <- ezpickr::pick("data/issue.xlsx")
+knitr::kable(issue, caption = "Systematic accessibility issue report.")
+```
+
+## Input UI Issues
+
+### JAWS
+
+#### Line-by-line navigation is silent when system cursor position is at the first character of a line; it works most responsively when cursor position is at the last character {#issue-jaws-input1}
+
+[Go to test environment info](#issue1)
+
+1. Turn off virtual cursor by pressing JAWS+Z to fully activate "Forms" mode.
+2. Focus on source editor by pressing Ctrl+1.
+3. Type any two lines in the editor like below:
+``` r
+# Test code start:
+attach(airquality)
+summary(airquality)
+# Test code ends.
+```
+4. Press up/down arrow keys to see if JAWS reads each focused line: JAWS gives no feedback when system cursor is at the first character of each line; JAWS reads lines only when the cursor position is not at the first character (most responsive when the cursor is at the last character of each line).
+
+##### Demo video {#video1}
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/aTe4gkOU-vY" frameborder="0" allowfullscreen></iframe>
+
+***
+
+#### JAWS gives no feedback for any arrow-key navigations inside editor and console {#issue-jaws-input2}
+
+[Go to test environment info](#issue2)
+
+1. Turn off virtual cursor by pressing JAWS+Z to fully activate "Forms" mode.
+2. Focus on source editor by pressing Ctrl+1.
+3. Type in any codes.
+4. Press left/right/up/down arrow keys to see if JAWS reads any texts; no feedback at all. The same issue is found in the console (Ctrl+2) area.
+
+##### Demo video {#video2}
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/A_Eg-BLak0Y" frameborder="0" allowfullscreen></iframe>
+
+***
+
+#### Line-by-line navigation works only when cursor position is at the last character {#issue-jaws-input3}
+
+[Go to test environment info](#issue3)
+
+1. Turn off virtual cursor by pressing JAWS+Z to fully activate "Forms" mode.
+2. Focus on console by pressing Ctrl+2.
+3. Type any two lines in the editor like below:
+``` r
+# Test code start:
+attach(airquality) # Press enter.
+summary(airquality) # Press enter.
+# Test code ends.
+```
+4. Press up/down arrow keys to see if JAWS reads each focused line: JAWS gives no feedback when system cursor is not at the last character of each line; in other words, you have to make sure the cursor position to be at the end by pressing End key when JAWS gives no feedback.
+
+### NVDA
+
+#### Character-by-character navigation just repeats the first character {#issue-nvda-input1}
+
+[Go to test environment info](#issue4)
+
+1. Turn on focus mode  by pressing NVDA+Spacebar.
+2. Focus on source editor by pressing Ctrl+1.
+3. Type any codes in the editor like below:
+``` r
+# Test code start:
+attach(airquality) # Press Ctrl+enter.
+# Test code ends.
+```
+4. Press left/right arrow keys to see if NVDA reads each focused character; it just repeats the first character. The same issue is found in console (Ctrl+2) area.
+
+## Output UI Issues
+
+* This section will be added moving forward.
