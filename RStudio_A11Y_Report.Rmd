@@ -10,6 +10,8 @@ date: "`r Sys.Date()`"
 knit: "bookdown::render_book"
 ---
 
+* Notes: this document is written in [Rmarkdown](https://rmarkdown.rstudio.com/) for both continuous and reproducible reports, and all source codes/files are available on JooYoung Seo's [GitHub repository](https://github.com/jooyoungseo/rstudio-a11y).
+
 # Background {#background}
 
 When we talk about "accessibility," the following question has to be asked first.
